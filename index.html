@@ -3,353 +3,604 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Aghni — XVIII</title>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cinzel:wght@400;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<title>For Aghni 🌹</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+Upright:wght@300;400;500&family=Alex+Brush&family=Jost:wght@200;300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:  #050505;
-  --bone:   #e2d8c8;
-  --ivory:  #f2ece0;
-  --gold:   #b89a5a;
-  --gold-l: #d4b87a;
-  --dim:    rgba(226,216,200,0.38);
-  --dimmer: rgba(226,216,200,0.18);
+  --bg:      #07080f;
+  --blush:   #e8a8b0;
+  --blush-d: #c47888;
+  --blush-l: #f4cdd2;
+  --petal:   #f0bec4;
+  --cream:   #f6ede0;
+  --warm:    #ede0d4;
+  --mist:    rgba(246,237,224,0.75);
+  --dim:     rgba(246,237,224,0.42);
+  --dimmer:  rgba(246,237,224,0.22);
+  --glass:   rgba(255,255,255,0.055);
+  --border:  rgba(232,168,176,0.2);
 }
 
 html, body {
   height: 100%;
-  background: var(--black);
+  background: var(--bg);
   overflow: hidden;
-  font-family: 'EB Garamond', Georgia, serif;
-  color: var(--bone);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--cream);
 }
 
-.bg {
+/* ─── BG ─── */
+.bg-photo {
   position: fixed; inset: 0; z-index: 0;
   background: url('aghni.jpeg') center / cover no-repeat;
-  filter: grayscale(70%) contrast(0.8);
-  opacity: 0.13;
+  filter: grayscale(50%) brightness(0.45) saturate(0.5);
+  opacity: 0.28;
 }
 .bg-wash {
   position: fixed; inset: 0; z-index: 1;
-  background: radial-gradient(ellipse at 50% 40%, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.92) 100%);
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 90%, rgba(7,8,15,0.75) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 60% at 85% 10%, rgba(7,8,15,0.7) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(7,8,15,0.4) 0%, rgba(7,8,15,0.2) 50%, rgba(7,8,15,0.5) 100%);
 }
-.grain {
-  position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px;
+.glow-r {
+  position: fixed; z-index: 1; pointer-events: none;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,120,136,0.1) 0%, transparent 65%);
+  top: -150px; right: -150px;
+}
+.glow-l {
+  position: fixed; z-index: 1; pointer-events: none;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,100,120,0.08) 0%, transparent 65%);
+  bottom: -120px; left: -120px;
 }
 
-/* ── PAGES ── */
+/* ─── ANIMATED ROSES (fixed layer z-index 2) ─── */
+.rose-layer {
+  position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden;
+}
+
+/* LEFT STEM — sway from bottom */
+.stem-left {
+  position: absolute;
+  bottom: 0; left: 0;
+  transform-origin: 60px 100%;
+  animation: sway-l 6s ease-in-out infinite;
+}
+@keyframes sway-l {
+  0%,100% { transform: rotate(0deg); }
+  30%      { transform: rotate(2.5deg); }
+  65%      { transform: rotate(-2deg); }
+}
+
+/* RIGHT STEM — sway from bottom */
+.stem-right {
+  position: absolute;
+  bottom: 0; right: 0;
+  transform-origin: calc(100% - 60px) 100%;
+  animation: sway-r 7s ease-in-out infinite;
+}
+@keyframes sway-r {
+  0%,100% { transform: rotate(0deg); }
+  35%      { transform: rotate(-2deg); }
+  70%      { transform: rotate(2.5deg); }
+}
+
+/* individual petal micro-movement */
+.petal-a { animation: petal-drift 4s ease-in-out infinite; transform-box: fill-box; }
+.petal-b { animation: petal-drift 5s ease-in-out 0.8s infinite; transform-box: fill-box; }
+.petal-c { animation: petal-drift 4.5s ease-in-out 1.4s infinite; transform-box: fill-box; }
+@keyframes petal-drift {
+  0%,100% { transform: rotate(0deg); }
+  50%      { transform: rotate(3deg); }
+}
+
+/* leaf rustle */
+.leaf-a { animation: leaf-r 5s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.leaf-b { animation: leaf-r 6s ease-in-out 1s infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.leaf-c { animation: leaf-r 4.5s ease-in-out 0.5s infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes leaf-r {
+  0%,100% { transform: rotate(0deg); }
+  40%      { transform: rotate(4deg); }
+  75%      { transform: rotate(-2deg); }
+}
+
+/* falling petals */
+.fall-petal {
+  position: absolute;
+  width: 10px; height: 8px;
+  border-radius: 50% 0 50% 0;
+  background: rgba(240,190,196,0.25);
+  animation: petfall linear infinite;
+  top: -20px;
+}
+@keyframes petfall {
+  0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  80%  { opacity: 0.3; }
+  100% { transform: translateY(100vh) rotate(540deg) translateX(60px); opacity: 0; }
+}
+
+/* ─── PAGES ─── */
 .page {
   position: fixed; inset: 0; z-index: 3;
   display: flex; align-items: center; justify-content: center;
   opacity: 0; pointer-events: none;
-  transition: opacity 0.9s ease;
+  transition: opacity 1s cubic-bezier(0.4,0,0.2,1);
 }
 .page.active { opacity: 1; pointer-events: all; }
 
-/* ══ PAGE 1 – COVER ══ */
+/* ══ PAGE 1 — COVER ══ */
 .cover {
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  padding: 24px;
+  text-align: center; cursor: pointer; user-select: none; padding: 24px 32px;
 }
-.cover-eyebrow {
-  font-family: 'Cinzel', serif;
-  font-size: 0.58em;
-  letter-spacing: 7px;
-  color: var(--gold);
-  opacity: 0.55;
-  text-transform: uppercase;
+.c-sup {
+  font-family: 'Jost', sans-serif; font-weight: 200;
+  font-size: 0.62em; letter-spacing: 8px; text-transform: uppercase;
+  color: var(--blush); opacity: 0.7; display: block; margin-bottom: 20px;
+  animation: rise 1.4s ease 0.2s both;
+}
+.c-name {
+  font-family: 'Cormorant Upright', serif; font-weight: 300;
+  font-size: clamp(4.5em, 15vw, 8em);
+  color: var(--cream); letter-spacing: 6px; line-height: 0.95;
   display: block;
-  margin-bottom: 24px;
-  animation: fslide 1.2s ease 0.3s both;
+  animation: rise 1.4s ease 0.4s both;
 }
-.cover-name {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(3em, 12vw, 6em);
-  font-weight: 500;
-  color: var(--ivory);
-  letter-spacing: 4px;
-  line-height: 1;
-  display: block;
-  animation: fslide 1.2s ease 0.5s both;
+.c-tagline {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(0.9em, 2.5vw, 1.1em);
+  color: var(--blush); opacity: 0.6; letter-spacing: 3px;
+  display: block; margin-top: 10px;
+  animation: rise 1.4s ease 0.6s both;
 }
-.cover-roman {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.75em, 2vw, 0.9em);
-  letter-spacing: 10px;
-  color: var(--gold);
-  opacity: 0.4;
-  display: block;
-  margin-top: 10px;
-  animation: fslide 1.2s ease 0.7s both;
+.c-line {
+  width: 1px; height: 55px;
+  background: linear-gradient(to bottom, transparent, rgba(232,168,176,0.7), transparent);
+  margin: 28px auto;
+  animation: rise 1.4s ease 0.8s both;
 }
-.cover-rule {
-  width: 1px; height: 60px;
-  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-  margin: 32px auto;
-  animation: fslide 1.2s ease 0.9s both;
+.c-hint {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 0.9em; color: var(--dimmer); letter-spacing: 3px; display: block;
+  animation: pulse 3s ease-in-out infinite, rise 1.4s ease 1s both;
 }
-.cover-hint {
-  font-style: italic;
-  font-size: 0.88em;
-  color: var(--dimmer);
-  letter-spacing: 3px;
-  display: block;
-  animation: blink 2.5s ease-in-out infinite, fslide 1.2s ease 1.1s both;
-}
-@keyframes blink  { 0%,100%{opacity:.15} 50%{opacity:.55} }
-@keyframes fslide { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+@keyframes pulse { 0%,100%{opacity:.18} 55%{opacity:.65} }
+@keyframes rise { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
 
-/* ══ PAGE 2 – GREETING ══ */
-.card {
+/* ══ PAGE 2 — ENVELOPE/GREETING ══ */
+.envelope-card {
   width: min(480px, 90vw);
-  padding: 52px 44px;
-  position: relative;
-  text-align: center;
+  background: rgba(20,14,20,0.7);
+  backdrop-filter: blur(28px) saturate(1.3);
+  -webkit-backdrop-filter: blur(28px) saturate(1.3);
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(240,190,196,0.06) inset;
+  padding: 54px 46px;
+  position: relative; text-align: center;
 }
-.card::before, .card::after {
-  content: ''; position: absolute;
-  border: 1px solid rgba(184,154,90,0.18); border-radius: 1px; pointer-events: none;
+/* double border frame */
+.envelope-card::before {
+  content: ''; position: absolute; inset: 12px;
+  border: 1px solid rgba(232,168,176,0.12); pointer-events: none;
 }
-.card::before { inset: 0; }
-.card::after  { inset: 10px; }
+/* corner rosettes */
+.envelope-card::after {
+  content: '✦';
+  position: absolute; top: 20px; right: 20px;
+  color: var(--blush); opacity: 0.25; font-size: 0.6em;
+}
+.corner-tl {
+  position: absolute; top: 18px; left: 22px;
+  color: var(--blush); opacity: 0.25; font-size: 0.6em;
+}
 
-.card-tag {
-  font-family: 'Cinzel', serif;
-  font-size: 0.58em; letter-spacing: 6px;
-  color: var(--gold); opacity: 0.5;
-  text-transform: uppercase;
-  display: block; margin-bottom: 20px;
+.e-eyebrow {
+  font-family: 'Jost', sans-serif; font-weight: 200;
+  font-size: 0.58em; letter-spacing: 7px; text-transform: uppercase;
+  color: var(--blush); opacity: 0.65; display: block; margin-bottom: 22px;
 }
-.card-title {
-  font-family: 'Dancing Script', cursive;
-  font-size: clamp(2em, 7vw, 3.2em);
-  color: var(--ivory); line-height: 1.1;
-  display: block; margin-bottom: 4px;
+.e-title {
+  font-family: 'Alex Brush', cursive;
+  font-size: clamp(2.4em, 8vw, 3.6em);
+  color: var(--cream); line-height: 1.1; display: block; margin-bottom: 5px;
 }
-.card-name {
-  font-family: 'Cinzel', serif;
+.e-name {
+  font-family: 'Cormorant Upright', serif; font-weight: 300;
   font-size: clamp(0.72em, 2vw, 0.88em);
-  letter-spacing: 5px; color: var(--gold); opacity: 0.6;
-  display: block; margin-bottom: 28px;
+  letter-spacing: 6px; color: var(--blush); opacity: 0.7;
+  display: block; margin-bottom: 30px;
 }
-.crule {
-  display: flex; align-items: center; gap: 12px;
-  margin: 0 auto 24px; width: 70%;
+.e-rule { display: flex; align-items: center; gap: 12px; margin: 0 auto 26px; width: 68%; }
+.e-rule-line { flex:1; height:1px; background: linear-gradient(to right, transparent, rgba(232,168,176,0.3), transparent); }
+.e-rule-dot  { font-size: 0.4em; color: var(--blush); opacity: 0.45; }
+.e-body {
+  font-size: clamp(1em, 2.5vw, 1.12em); font-style: italic; font-weight: 300;
+  line-height: 2; color: var(--dim); margin-bottom: 30px;
 }
-.crule-line { flex:1; height:1px; background: linear-gradient(to right, transparent, rgba(184,154,90,0.3), transparent); }
-.crule-dot  { color: var(--gold); opacity: 0.4; font-size: 0.5em; }
-.card-body {
-  font-size: 1.05em; font-style: italic;
-  line-height: 1.9; color: var(--dim); margin-bottom: 28px;
-}
-.card-from { font-size: 0.78em; color: var(--dimmer); letter-spacing: 2px; }
-.card-from strong {
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.8em; color: var(--gold-l);
-  display: block; margin-top: 2px;
+.e-from { font-size: 0.75em; letter-spacing: 3px; color: var(--dimmer); font-family: 'Jost', sans-serif; font-weight: 200; }
+.e-from em {
+  font-family: 'Alex Brush', cursive; font-style: normal;
+  font-size: 2.2em; color: var(--blush-l); display: block; margin-top: 3px; line-height: 1.1;
 }
 
-/* ══ PAGE 3 – LETTER ══ */
-.letter-wrap {
-  width: min(540px, 92vw);
-  max-height: 82vh;
-  overflow-y: auto;
-  padding: 48px 44px 48px 58px;
+/* ══ PAGE 3 — LETTER PAPER ══ */
+.letter-paper {
+  width: min(550px, 92vw);
+  max-height: 84vh; overflow-y: auto;
+  background: rgba(18,12,18,0.72);
+  backdrop-filter: blur(28px) saturate(1.2);
+  -webkit-backdrop-filter: blur(28px) saturate(1.2);
+  border: 1px solid rgba(232,168,176,0.18);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 6px 6px 0 rgba(232,168,176,0.05);
+  padding: 52px 52px 52px 70px;
   position: relative;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(184,154,90,0.2) transparent;
+  scrollbar-width: thin; scrollbar-color: rgba(232,168,176,0.2) transparent;
+  /* ruled lines */
+  background-image:
+    linear-gradient(rgba(255,255,255,0) 0px, rgba(255,255,255,0) 29px, rgba(232,168,176,0.05) 29px, rgba(232,168,176,0.05) 30px),
+    linear-gradient(rgba(18,12,18,0.72), rgba(18,12,18,0.72));
+  background-size: 100% 30px;
 }
-.letter-wrap::-webkit-scrollbar { width: 3px; }
-.letter-wrap::-webkit-scrollbar-thumb { background: rgba(184,154,90,0.2); border-radius: 4px; }
-.letter-wrap::before {
+.letter-paper::-webkit-scrollbar { width: 3px; }
+.letter-paper::-webkit-scrollbar-thumb { background: rgba(232,168,176,0.2); border-radius: 4px; }
+/* left margin rule */
+.letter-paper::before {
   content: ''; position: absolute;
-  top: 0; bottom: 0; left: 44px; width: 1px;
-  background: linear-gradient(to bottom, transparent 5%, rgba(184,154,90,0.12) 20%, rgba(184,154,90,0.12) 80%, transparent 95%);
+  top: 0; bottom: 0; left: 56px; width: 1px;
+  background: linear-gradient(to bottom, transparent 4%, rgba(196,120,136,0.3) 15%, rgba(196,120,136,0.3) 85%, transparent 96%);
 }
-.ldate {
-  font-size: 0.78em; font-style: italic;
-  color: var(--dimmer); text-align: right;
-  display: block; margin-bottom: 28px; letter-spacing: 1px;
+.l-date {
+  font-family: 'Jost', sans-serif; font-weight: 200;
+  font-size: 0.68em; letter-spacing: 2px;
+  color: var(--dimmer); text-align: right; display: block; margin-bottom: 28px;
 }
-.lsal {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2em; color: var(--gold-l);
-  display: block; margin-bottom: 22px;
+.l-sal {
+  font-family: 'Alex Brush', cursive;
+  font-size: 2.2em; color: var(--blush-l); display: block; margin-bottom: 20px; line-height: 1.1;
 }
-.lbody { font-size: 1.04em; line-height: 1.95; color: var(--dim); }
-.lbody p {
+.l-body { font-size: clamp(1em, 2.4vw, 1.08em); line-height: 2; color: var(--mist); font-weight: 300; }
+.l-body p {
   margin-bottom: 1.3em;
   opacity: 0; transform: translateY(8px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.lbody p.vis { opacity:1; transform:none; }
-.lbody p:first-child::first-letter {
-  font-family: 'Cinzel', serif;
-  font-size: 3em; line-height: 0.8;
-  float: left; margin-right: 8px; margin-top: 4px;
-  color: var(--gold); opacity: 0.7;
+.l-body p.vis { opacity:1; transform:none; }
+.l-body p:first-child::first-letter {
+  font-family: 'Cormorant Upright', serif; font-weight: 300;
+  font-size: 3em; line-height: 0.78;
+  float: left; margin-right: 8px; margin-top: 5px;
+  color: var(--blush-l);
 }
-.lsign { margin-top: 28px; text-align: right; }
-.lsign .closing { font-size: 0.82em; font-style: italic; color: var(--dimmer); letter-spacing: 2px; }
-.lsign .sig {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.2em; color: var(--ivory);
-  display: block; margin-top: 2px;
-}
+.l-sign { margin-top: 28px; text-align: right; }
+.l-sign .closing { font-family: 'Jost', sans-serif; font-weight: 200; font-size: 0.68em; letter-spacing: 3px; color: var(--dimmer); }
+.l-sign .sig { font-family: 'Alex Brush', cursive; font-size: 2.3em; color: var(--cream); display: block; margin-top: 3px; line-height: 1; }
 
-/* ══ PAGE 4 – GIFT ══ */
-.gift-wrap { text-align: center; padding: 0 24px; }
-.gift-q {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.1em, 4vw, 1.5em);
-  letter-spacing: 2px; color: var(--ivory);
-  display: block; margin-bottom: 8px;
+/* ══ PAGE 4 — GIFT ══ */
+.gift-card {
+  width: min(420px, 90vw);
+  background: rgba(18,12,18,0.72);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+  padding: 56px 44px;
+  text-align: center; position: relative;
 }
-.gift-sub {
-  font-style: italic; font-size: 0.95em;
-  color: var(--dimmer); letter-spacing: 1px;
-  display: block; margin-bottom: 36px;
+.gift-card::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(232,168,176,0.1); pointer-events: none; }
+.g-q {
+  font-family: 'Cormorant Upright', serif; font-weight: 300;
+  font-size: clamp(1.2em, 4vw, 1.7em); letter-spacing: 2px;
+  color: var(--cream); display: block; margin-bottom: 10px;
 }
-.gift-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.g-sub { font-style: italic; font-size: 1em; color: var(--dimmer); display: block; margin-bottom: 36px; letter-spacing: 1px; }
+.g-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .gbtn {
   padding: 12px 32px;
-  font-family: 'Cinzel', serif;
-  font-size: 0.68em; letter-spacing: 3px;
-  text-transform: uppercase;
-  cursor: pointer; border: none;
-  transition: all 0.3s ease;
+  font-family: 'Jost', sans-serif; font-weight: 300;
+  font-size: 0.7em; letter-spacing: 4px; text-transform: uppercase;
+  cursor: pointer; border: none; transition: all 0.35s ease;
 }
-.gbtn-yes { background: var(--gold); color: var(--black); }
-.gbtn-yes:hover { background: var(--gold-l); transform: translateY(-2px); }
-.gbtn-no  {
-  background: transparent; color: var(--dimmer);
-  border: 1px solid rgba(184,154,90,0.25);
+.gbtn-yes {
+  background: linear-gradient(135deg, var(--blush-d), #a05060);
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(196,120,136,0.35);
 }
-.gbtn-no:hover { color: var(--bone); border-color: rgba(184,154,90,0.5); transform: translateY(-2px); }
-#gift-res {
-  margin-top: 28px; font-style: italic; font-size: 1em;
-  color: var(--dim); min-height: 24px;
-  opacity: 0; transition: opacity 0.6s ease; letter-spacing: 0.5px;
+.gbtn-yes:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(196,120,136,0.5); }
+.gbtn-no {
+  background: var(--glass); color: var(--dimmer);
+  border: 1px solid rgba(232,168,176,0.2);
+  backdrop-filter: blur(10px);
 }
-#gift-res.show { opacity: 1; }
+.gbtn-no:hover { color: var(--cream); border-color: rgba(232,168,176,0.5); transform: translateY(-3px); }
+#gres {
+  margin-top: 28px; font-style: italic; font-size: 1.06em;
+  color: var(--dim); min-height: 26px;
+  opacity: 0; transition: opacity 0.6s ease;
+}
+#gres.show { opacity:1; }
 
-/* ══ PAGE 5 – FINALE ══ */
+/* ══ PAGE 5 — FINALE ══ */
 .finale { text-align: center; padding: 0 24px; }
 .finale-main {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.6em, 7vw, 3.4em);
-  font-weight: 500; letter-spacing: 5px;
-  color: var(--ivory); display: block;
-  animation: shimmer 3s ease-in-out infinite;
+  font-family: 'Cormorant Upright', serif; font-weight: 300;
+  font-size: clamp(2em, 8vw, 4.2em);
+  letter-spacing: 5px; color: var(--cream); display: block;
+  animation: shimmer 3.5s ease-in-out infinite;
 }
 @keyframes shimmer {
-  0%,100% { text-shadow: 0 0 40px rgba(184,154,90,0.3); }
-  50%      { text-shadow: 0 0 80px rgba(184,154,90,0.65), 0 0 120px rgba(184,154,90,0.25); }
+  0%,100% { text-shadow: 0 0 30px rgba(232,168,176,0.25); }
+  50%      { text-shadow: 0 0 70px rgba(232,168,176,0.6), 0 0 120px rgba(240,190,196,0.2); }
 }
-.finale-rule { width: 40px; height: 1px; background: var(--gold); margin: 20px auto; opacity: 0.4; }
+.finale-rule { width: 44px; height: 1px; background: linear-gradient(to right, transparent, var(--blush), transparent); margin: 22px auto; }
 .finale-sub {
-  font-style: italic;
-  font-size: clamp(0.9em, 2.5vw, 1.1em);
-  color: var(--dimmer); letter-spacing: 1px;
-  max-width: 360px; margin: 0 auto; line-height: 1.75;
+  font-style: italic; font-size: clamp(0.95em, 2.5vw, 1.12em);
+  color: var(--dimmer); max-width: 380px; margin: 0 auto;
+  line-height: 1.85; letter-spacing: 0.5px; font-weight: 300;
 }
 
-/* ── NAV ── */
-.nav-next {
-  position: fixed; bottom: 36px; right: 36px; z-index: 10;
+/* ─── NAV ─── */
+.nav-n {
+  position: fixed; bottom: 32px; right: 32px; z-index: 10;
   padding: 11px 28px;
-  font-family: 'Cinzel', serif; font-size: 0.6em; letter-spacing: 4px;
-  text-transform: uppercase; background: transparent;
-  color: var(--gold); border: 1px solid rgba(184,154,90,0.3);
-  cursor: pointer;
+  font-family: 'Jost', sans-serif; font-weight: 300;
+  font-size: 0.63em; letter-spacing: 4px; text-transform: uppercase;
+  background: rgba(232,168,176,0.08); color: var(--blush-l);
+  border: 1px solid rgba(232,168,176,0.25);
+  backdrop-filter: blur(14px); cursor: pointer;
   opacity: 0; pointer-events: none; transform: translateY(10px);
   transition: all 0.4s ease;
 }
-.nav-next.vis { opacity:1; pointer-events:all; transform:none; }
-.nav-next:hover { background: rgba(184,154,90,0.08); border-color: var(--gold); }
+.nav-n.vis { opacity:1; pointer-events:all; transform:none; }
+.nav-n:hover { background: rgba(232,168,176,0.14); border-color: rgba(232,168,176,0.5); }
 
-.nav-back {
-  position: fixed; bottom: 36px; left: 36px; z-index: 10;
+.nav-b {
+  position: fixed; bottom: 32px; left: 32px; z-index: 10;
   padding: 11px 24px;
-  font-family: 'Cinzel', serif; font-size: 0.6em; letter-spacing: 4px;
-  text-transform: uppercase; background: transparent;
-  color: rgba(184,154,90,0.25); border: 1px solid rgba(184,154,90,0.1);
-  cursor: pointer;
-  opacity: 0; pointer-events: none;
-  transition: all 0.4s ease;
+  font-family: 'Jost', sans-serif; font-weight: 300;
+  font-size: 0.63em; letter-spacing: 4px; text-transform: uppercase;
+  background: transparent; color: rgba(232,168,176,0.25);
+  border: 1px solid rgba(232,168,176,0.1); cursor: pointer;
+  opacity: 0; pointer-events: none; transition: all 0.4s ease;
 }
-.nav-back.vis { opacity:1; pointer-events:all; }
-.nav-back:hover { color: var(--gold); border-color: rgba(184,154,90,0.35); }
+.nav-b.vis { opacity:1; pointer-events:all; }
+.nav-b:hover { color: var(--blush); border-color: rgba(232,168,176,0.3); }
 
 .dots {
-  position: fixed; bottom: 42px; left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: 38px; left: 50%; transform: translateX(-50%);
   display: flex; gap: 10px; z-index: 10;
 }
-.dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: rgba(184,154,90,0.2);
-  transition: all 0.4s ease;
-}
-.dot.on { background: var(--gold); box-shadow: 0 0 8px rgba(184,154,90,0.5); width: 18px; border-radius: 3px; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(232,168,176,0.2); transition: all 0.4s ease; }
+.dot.on { background: var(--blush); box-shadow: 0 0 8px rgba(232,168,176,0.55); width: 20px; border-radius: 3px; }
 
 /* confetti */
-.cf {
-  position: fixed; pointer-events: none; border-radius: 50%; z-index: 20;
-  animation: cffall linear forwards;
-}
-@keyframes cffall {
-  from { transform: translateY(-10px) rotate(0); opacity: 1; }
-  to   { transform: translateY(110vh) rotate(600deg); opacity: 0; }
-}
+.cf { position:fixed; pointer-events:none; z-index:20; animation: cffall linear forwards; }
+@keyframes cffall { from{transform:translateY(-10px) rotate(0);opacity:1} to{transform:translateY(110vh) rotate(720deg);opacity:0} }
 </style>
 </head>
 <body>
 
-<div class="bg"></div>
+<div class="bg-photo"></div>
 <div class="bg-wash"></div>
-<div class="grain"></div>
+<div class="glow-r"></div>
+<div class="glow-l"></div>
+
+<!-- ═══ ANIMATED BOTANICAL ROSES ═══ -->
+<div class="rose-layer">
+
+  <!-- FALLING PETALS (JS generated) -->
+  <div id="petals-wrap"></div>
+
+  <svg id="roses-svg" width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" fill="none">
+
+    <!-- ══ LEFT STEM ══ -->
+    <g class="stem-left">
+      <!-- main stem -->
+      <path d="M55 900 C65 820 45 760 75 690 C95 640 130 635 118 575 C106 515 60 500 82 440 C100 388 148 390 142 330 C136 278 92 265 110 210 C125 165 168 158 164 110"
+            stroke="#7a5060" stroke-width="2.2" stroke-linecap="round"/>
+
+      <!-- thorn 1 -->
+      <path d="M82 680 L65 665" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+      <!-- thorn 2 -->
+      <path d="M105 548 L88 535" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+      <!-- thorn 3 -->
+      <path d="M118 415 L100 402" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+      <!-- thorn 4 -->
+      <path d="M136 280 L152 268" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+
+      <!-- LEAF 1 (at ~680) -->
+      <g class="leaf-a">
+        <path d="M75 690 C45 665 10 675 -5 650 C18 638 58 645 75 690Z" fill="rgba(60,90,55,0.55)" stroke="rgba(80,115,70,0.7)" stroke-width="0.8"/>
+        <path d="M75 690 C52 662 58 638 78 630" stroke="rgba(80,115,70,0.4)" stroke-width="0.6"/>
+      </g>
+      <g class="leaf-b" style="transform-origin:75px 690px">
+        <path d="M75 690 C102 670 118 648 130 655 C118 672 90 682 75 690Z" fill="rgba(55,85,50,0.45)" stroke="rgba(75,108,65,0.6)" stroke-width="0.8"/>
+      </g>
+
+      <!-- LEAF 2 (at ~575) -->
+      <g class="leaf-c">
+        <path d="M118 575 C88 555 50 560 35 538 C58 526 98 534 118 575Z" fill="rgba(60,90,55,0.5)" stroke="rgba(80,115,70,0.65)" stroke-width="0.8"/>
+        <path d="M118 575 C95 548 100 525 120 518" stroke="rgba(80,115,70,0.35)" stroke-width="0.6"/>
+      </g>
+      <g class="leaf-a">
+        <path d="M118 575 C144 553 158 528 175 534 C163 552 135 566 118 575Z" fill="rgba(50,80,45,0.45)" stroke="rgba(70,105,60,0.6)" stroke-width="0.8"/>
+      </g>
+
+      <!-- LEAF 3 (at ~440) -->
+      <g class="leaf-b">
+        <path d="M82 440 C55 420 20 428 4 406 C28 394 66 404 82 440Z" fill="rgba(60,90,55,0.5)" stroke="rgba(80,115,70,0.65)" stroke-width="0.8"/>
+      </g>
+      <g class="leaf-c">
+        <path d="M82 440 C108 418 126 392 145 400 C134 420 106 432 82 440Z" fill="rgba(55,85,50,0.45)" stroke="rgba(75,108,65,0.6)" stroke-width="0.8"/>
+      </g>
+
+      <!-- LEAF 4 (at ~330) -->
+      <g class="leaf-a">
+        <path d="M142 330 C116 310 82 316 66 292 C90 280 128 290 142 330Z" fill="rgba(58,88,52,0.5)" stroke="rgba(78,112,68,0.65)" stroke-width="0.8"/>
+        <path d="M142 330 C118 305 125 282 145 275" stroke="rgba(78,112,68,0.35)" stroke-width="0.6"/>
+      </g>
+      <g class="leaf-b">
+        <path d="M142 330 C166 308 182 282 200 290 C190 310 162 322 142 330Z" fill="rgba(50,80,45,0.4)" stroke="rgba(70,105,60,0.55)" stroke-width="0.8"/>
+      </g>
+
+      <!-- ROSE BUD TOP LEFT (fully open rose) -->
+      <g transform="translate(164,110)">
+        <!-- sepals -->
+        <path d="M0 12 C-6 5, -12 2, -10 -4 C-4 -2, 2 4, 0 12Z" fill="rgba(55,80,48,0.7)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <path d="M0 12 C6 5, 12 2, 10 -4 C4 -2, -2 4, 0 12Z" fill="rgba(55,80,48,0.65)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <!-- outer petals -->
+        <g class="petal-a">
+          <path d="M0 10 C-18 0, -22 -18, -10 -28 C-4 -18, -4 0, 0 10Z" fill="rgba(212,133,122,0.55)" stroke="rgba(220,148,138,0.7)" stroke-width="0.8"/>
+          <path d="M0 10 C18 0, 22 -18, 10 -28 C4 -18, 4 0, 0 10Z" fill="rgba(208,126,116,0.5)" stroke="rgba(216,142,132,0.65)" stroke-width="0.8"/>
+        </g>
+        <g class="petal-b">
+          <path d="M0 8 C-16 -2, -26 -12, -20 -26 C-10 -20, -5 -8, 0 8Z" fill="rgba(224,155,145,0.6)" stroke="rgba(230,165,155,0.75)" stroke-width="0.8"/>
+          <path d="M0 8 C16 -2, 26 -12, 20 -26 C10 -20, 5 -8, 0 8Z" fill="rgba(220,148,138,0.55)" stroke="rgba(226,158,148,0.7)" stroke-width="0.8"/>
+        </g>
+        <!-- inner petals -->
+        <g class="petal-c">
+          <path d="M0 6 C-10 -4, -14 -16, -6 -24 C-2 -14, -1 -4, 0 6Z" fill="rgba(236,175,168,0.7)" stroke="rgba(240,185,178,0.8)" stroke-width="0.7"/>
+          <path d="M0 6 C10 -4, 14 -16, 6 -24 C2 -14, 1 -4, 0 6Z" fill="rgba(232,170,162,0.65)" stroke="rgba(236,180,172,0.75)" stroke-width="0.7"/>
+          <path d="M0 4 C0 -8, -4 -16, 0 -22 C4 -16, 0 -8, 0 4Z" fill="rgba(244,200,195,0.75)" stroke="rgba(246,208,204,0.8)" stroke-width="0.6"/>
+        </g>
+      </g>
+
+      <!-- SMALL BUD at ~210 -->
+      <g transform="translate(110,210)">
+        <path d="M0 8 C-4 2, -6 -2, -4 -8 C0 -5, 3 0, 0 8Z" fill="rgba(55,80,48,0.7)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <path d="M0 8 C4 2, 6 -2, 4 -8 C0 -5, -3 0, 0 8Z" fill="rgba(55,80,48,0.65)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <g class="petal-a">
+          <path d="M0 6 C-8 0, -10 -8, -5 -14 C-1 -8, 0 0, 0 6Z" fill="rgba(212,133,122,0.5)" stroke="rgba(220,148,138,0.65)" stroke-width="0.7"/>
+          <path d="M0 6 C8 0, 10 -8, 5 -14 C1 -8, 0 0, 0 6Z" fill="rgba(208,126,116,0.45)" stroke="rgba(216,142,132,0.6)" stroke-width="0.7"/>
+        </g>
+        <g class="petal-b">
+          <path d="M0 4 C-5 -2, -7 -8, -2 -14 C1 -8, 1 -2, 0 4Z" fill="rgba(228,168,158,0.6)" stroke="rgba(234,178,168,0.7)" stroke-width="0.6"/>
+          <path d="M0 4 C5 -2, 7 -8, 2 -14 C-1 -8, -1 -2, 0 4Z" fill="rgba(224,162,152,0.55)" stroke="rgba(230,172,162,0.65)" stroke-width="0.6"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- ══ RIGHT STEM ══ -->
+    <g class="stem-right">
+      <!-- main stem (mirrored) -->
+      <path d="M1385 900 C1375 820 1395 760 1365 690 C1345 640 1310 635 1322 575 C1334 515 1380 500 1358 440 C1340 388 1292 390 1298 330 C1304 278 1348 265 1330 210 C1315 165 1272 158 1276 110"
+            stroke="#7a5060" stroke-width="2.2" stroke-linecap="round"/>
+
+      <!-- thorns -->
+      <path d="M1358 680 L1375 665" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M1335 548 L1352 535" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M1322 415 L1340 402" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M1304 280 L1288 268" stroke="#6a4050" stroke-width="1.4" stroke-linecap="round"/>
+
+      <!-- LEAF 1 right -->
+      <g class="leaf-b">
+        <path d="M1365 690 C1395 665 1430 675 1445 650 C1422 638 1382 645 1365 690Z" fill="rgba(60,90,55,0.55)" stroke="rgba(80,115,70,0.7)" stroke-width="0.8"/>
+      </g>
+      <g class="leaf-a">
+        <path d="M1365 690 C1338 670 1322 648 1310 655 C1322 672 1350 682 1365 690Z" fill="rgba(55,85,50,0.45)" stroke="rgba(75,108,65,0.6)" stroke-width="0.8"/>
+      </g>
+
+      <!-- LEAF 2 right -->
+      <g class="leaf-c">
+        <path d="M1322 575 C1352 555 1390 560 1405 538 C1382 526 1342 534 1322 575Z" fill="rgba(60,90,55,0.5)" stroke="rgba(80,115,70,0.65)" stroke-width="0.8"/>
+      </g>
+      <g class="leaf-b">
+        <path d="M1322 575 C1296 553 1282 528 1265 534 C1277 552 1305 566 1322 575Z" fill="rgba(50,80,45,0.45)" stroke="rgba(70,105,60,0.6)" stroke-width="0.8"/>
+      </g>
+
+      <!-- LEAF 3 right -->
+      <g class="leaf-a">
+        <path d="M1358 440 C1385 420 1420 428 1436 406 C1412 394 1374 404 1358 440Z" fill="rgba(60,90,55,0.5)" stroke="rgba(80,115,70,0.65)" stroke-width="0.8"/>
+      </g>
+      <g class="leaf-c">
+        <path d="M1358 440 C1332 418 1314 392 1295 400 C1306 420 1334 432 1358 440Z" fill="rgba(55,85,50,0.45)" stroke="rgba(75,108,65,0.6)" stroke-width="0.8"/>
+      </g>
+
+      <!-- LEAF 4 right -->
+      <g class="leaf-b">
+        <path d="M1298 330 C1324 310 1358 316 1374 292 C1350 280 1312 290 1298 330Z" fill="rgba(58,88,52,0.5)" stroke="rgba(78,112,68,0.65)" stroke-width="0.8"/>
+      </g>
+      <g class="leaf-a">
+        <path d="M1298 330 C1274 308 1258 282 1240 290 C1250 310 1278 322 1298 330Z" fill="rgba(50,80,45,0.4)" stroke="rgba(70,105,60,0.55)" stroke-width="0.8"/>
+      </g>
+
+      <!-- ROSE BUD top right (fully open) -->
+      <g transform="translate(1276,110)">
+        <path d="M0 12 C-6 5, -12 2, -10 -4 C-4 -2, 2 4, 0 12Z" fill="rgba(55,80,48,0.7)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <path d="M0 12 C6 5, 12 2, 10 -4 C4 -2, -2 4, 0 12Z" fill="rgba(55,80,48,0.65)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <g class="petal-b">
+          <path d="M0 10 C-18 0, -22 -18, -10 -28 C-4 -18, -4 0, 0 10Z" fill="rgba(212,133,122,0.55)" stroke="rgba(220,148,138,0.7)" stroke-width="0.8"/>
+          <path d="M0 10 C18 0, 22 -18, 10 -28 C4 -18, 4 0, 0 10Z" fill="rgba(208,126,116,0.5)" stroke="rgba(216,142,132,0.65)" stroke-width="0.8"/>
+        </g>
+        <g class="petal-c">
+          <path d="M0 8 C-16 -2, -26 -12, -20 -26 C-10 -20, -5 -8, 0 8Z" fill="rgba(224,155,145,0.6)" stroke="rgba(230,165,155,0.75)" stroke-width="0.8"/>
+          <path d="M0 8 C16 -2, 26 -12, 20 -26 C10 -20, 5 -8, 0 8Z" fill="rgba(220,148,138,0.55)" stroke="rgba(226,158,148,0.7)" stroke-width="0.8"/>
+        </g>
+        <g class="petal-a">
+          <path d="M0 6 C-10 -4, -14 -16, -6 -24 C-2 -14, -1 -4, 0 6Z" fill="rgba(236,175,168,0.7)" stroke="rgba(240,185,178,0.8)" stroke-width="0.7"/>
+          <path d="M0 6 C10 -4, 14 -16, 6 -24 C2 -14, 1 -4, 0 6Z" fill="rgba(232,170,162,0.65)" stroke="rgba(236,180,172,0.75)" stroke-width="0.7"/>
+          <path d="M0 4 C0 -8, -4 -16, 0 -22 C4 -16, 0 -8, 0 4Z" fill="rgba(244,200,195,0.75)" stroke="rgba(246,208,204,0.8)" stroke-width="0.6"/>
+        </g>
+      </g>
+
+      <!-- small bud right -->
+      <g transform="translate(1330,210)">
+        <path d="M0 8 C-4 2, -6 -2, -4 -8 C0 -5, 3 0, 0 8Z" fill="rgba(55,80,48,0.7)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <path d="M0 8 C4 2, 6 -2, 4 -8 C0 -5, -3 0, 0 8Z" fill="rgba(55,80,48,0.65)" stroke="rgba(70,100,58,0.8)" stroke-width="0.7"/>
+        <g class="petal-c">
+          <path d="M0 6 C-8 0, -10 -8, -5 -14 C-1 -8, 0 0, 0 6Z" fill="rgba(212,133,122,0.5)" stroke="rgba(220,148,138,0.65)" stroke-width="0.7"/>
+          <path d="M0 6 C8 0, 10 -8, 5 -14 C1 -8, 0 0, 0 6Z" fill="rgba(208,126,116,0.45)" stroke="rgba(216,142,132,0.6)" stroke-width="0.7"/>
+        </g>
+        <g class="petal-a">
+          <path d="M0 4 C-5 -2, -7 -8, -2 -14 C1 -8, 1 -2, 0 4Z" fill="rgba(228,168,158,0.6)" stroke="rgba(234,178,168,0.7)" stroke-width="0.6"/>
+          <path d="M0 4 C5 -2, 7 -8, 2 -14 C-1 -8, -1 -2, 0 4Z" fill="rgba(224,162,152,0.55)" stroke="rgba(230,172,162,0.65)" stroke-width="0.6"/>
+        </g>
+      </g>
+    </g>
+
+  </svg>
+</div>
+
+<!-- ═══ PAGES ═══ -->
 
 <!-- PAGE 1 · COVER -->
 <div class="page active" id="p1">
   <div class="cover" onclick="go(2)">
-    <span class="cover-eyebrow">a letter — for you</span>
-    <span class="cover-name">Aghni</span>
-    <span class="cover-roman">XVIII</span>
-    <div class="cover-rule"></div>
-    <span class="cover-hint">tap to open</span>
+    <span class="c-sup">a letter — for you</span>
+    <span class="c-name">Aghni</span>
+    <span class="c-tagline">eighteenth birthday</span>
+    <div class="c-line"></div>
+    <span class="c-hint">tap to open ✦</span>
   </div>
 </div>
 
 <!-- PAGE 2 · GREETING -->
 <div class="page" id="p2">
-  <div class="card">
-    <span class="card-tag">✦ &nbsp; a letter &nbsp; ✦</span>
-    <span class="card-title">Happy 18th,</span>
-    <span class="card-name">Aghni Arkinasari</span>
-    <div class="crule"><div class="crule-line"></div><span class="crule-dot">◆</span><div class="crule-line"></div></div>
-    <p class="card-body">
+  <div class="envelope-card">
+    <span class="corner-tl">✦</span>
+    <span class="e-eyebrow">✦ &nbsp; a letter &nbsp; ✦</span>
+    <span class="e-title">Happy 18th,</span>
+    <span class="e-name">Aghni Arkinasari</span>
+    <div class="e-rule"><div class="e-rule-line"></div><span class="e-rule-dot">🌹</span><div class="e-rule-line"></div></div>
+    <p class="e-body">
       Hari ini kamu resmi menjadi 18 tahun.<br>
-      Sebuah angka yang menyimpan banyak cerita<br>
+      Sebuah angka yang menyimpan banyak cerita,<br>
       dan lebih banyak lagi yang menunggu ditulis.
     </p>
-    <div class="crule"><div class="crule-line"></div><span class="crule-dot">◆</span><div class="crule-line"></div></div>
-    <span class="card-from">with warmth &amp; sincerity, <strong>Arsya</strong></span>
+    <div class="e-rule"><div class="e-rule-line"></div><span class="e-rule-dot">✦</span><div class="e-rule-line"></div></div>
+    <span class="e-from">with warmth &amp; sincerity, <em>Arsya</em></span>
   </div>
 </div>
 
 <!-- PAGE 3 · LETTER -->
 <div class="page" id="p3">
-  <div class="letter-wrap">
-    <span class="ldate" id="ldate"></span>
-    <span class="lsal">Dear Aghni,</span>
-    <div class="lbody" id="lbody">
+  <div class="letter-paper">
+    <span class="l-date" id="ldate"></span>
+    <span class="l-sal">Dear Aghni,</span>
+    <div class="l-body" id="lbody">
       <p>Surpriseeee, selamat ulang tahun ya, Aghni! Panjang umur, sehat selalu, dan jangan pernah lupa makan teratur — karena sehat itu mahal harganya.</p>
       <p>Semoga hari-harimu selalu dipenuhi hal-hal baik, dikelilingi orang-orang yang tulus, dan tentunya dipenuhi kebahagiaan yang selalu membuatmu tersenyum.</p>
       <p>Mungkin aku nggak terlalu pandai merangkai kata, tapi semoga surat sederhana ini bisa membuat hari spesialmu terasa sedikit lebih berkesan. Sederhana memang, tapi aku menuliskannya dengan sepenuh hati.</p>
@@ -358,7 +609,7 @@ html, body {
       <p>Semoga setiap doa yang kamu panjatkan didengar, setiap harapanmu menemukan jalannya, dan setiap pintu yang terbuka membawamu menuju hal-hal yang jauh lebih indah dari yang kamu bayangkan.</p>
       <p>Karena kamu pantas mendapatkan semua yang baik. Dan aku percaya itu sepenuhnya.</p>
     </div>
-    <div class="lsign">
+    <div class="l-sign">
       <span class="closing">from,</span>
       <span class="sig">Arsya</span>
     </div>
@@ -367,14 +618,14 @@ html, body {
 
 <!-- PAGE 4 · GIFT -->
 <div class="page" id="p4">
-  <div class="gift-wrap">
-    <span class="gift-q">Mau hadiah nggak?</span>
-    <span class="gift-sub">Dipikir-pikir dulu gess...</span>
-    <div class="gift-btns">
+  <div class="gift-card">
+    <span class="g-q">Mau hadiah nggak?</span>
+    <span class="g-sub">Dipikir-pikir dulu gess...</span>
+    <div class="g-btns">
       <button class="gbtn gbtn-yes" onclick="gYes()">Mau dong 🥺</button>
       <button class="gbtn gbtn-no"  onclick="gNo()">Gamau deh 😏</button>
     </div>
-    <p id="gift-res"></p>
+    <p id="gres"></p>
   </div>
 </div>
 
@@ -388,78 +639,70 @@ html, body {
 </div>
 
 <!-- NAV -->
-<button class="nav-next" id="nnext" onclick="go(cur+1)">Next →</button>
-<button class="nav-back" id="nback" onclick="go(cur-1)">← Back</button>
+<button class="nav-n" id="nn" onclick="go(cur+1)">Next →</button>
+<button class="nav-b" id="nb" onclick="go(cur-1)">← Back</button>
 <div class="dots" id="dots"></div>
 
 <script>
-const TOTAL = 5;
-let cur = 1;
-
-/* build dots */
+const T = 5; let cur = 1;
 const dotsEl = document.getElementById('dots');
-for (let i = 1; i <= TOTAL; i++) {
-  const d = document.createElement('div');
-  d.className = 'dot' + (i===1?' on':'');
-  d.id = 'dot'+i;
-  dotsEl.appendChild(d);
-}
+for (let i=1;i<=T;i++){const d=document.createElement('div');d.className='dot'+(i===1?' on':'');d.id='d'+i;dotsEl.appendChild(d);}
+document.getElementById('ldate').textContent=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
 
-/* date */
-document.getElementById('ldate').textContent =
-  new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+/* falling petals */
+(function(){
+  const w=document.getElementById('petals-wrap');
+  const cols=['rgba(240,190,196,0.3)','rgba(224,160,168,0.25)','rgba(248,210,215,0.28)','rgba(212,140,150,0.2)'];
+  for(let i=0;i<12;i++){
+    const p=document.createElement('div');
+    p.className='fall-petal';
+    const s=7+Math.random()*10;
+    p.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s*0.7}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${10+Math.random()*12}s;animation-delay:${Math.random()*10}s;border-radius:${Math.random()>0.5?'50% 0 50% 0':'0 50% 0 50%'};`;
+    w.appendChild(p);
+  }
+})();
 
-function go(n) {
-  if (n < 1 || n > TOTAL) return;
+function go(n){
+  if(n<1||n>T) return;
   document.getElementById('p'+cur).classList.remove('active');
-  document.getElementById('dot'+cur).classList.remove('on');
-  cur = n;
+  document.getElementById('d'+cur).classList.remove('on');
+  cur=n;
   document.getElementById('p'+cur).classList.add('active');
-  document.getElementById('dot'+cur).classList.add('on');
-
-  const next = document.getElementById('nnext');
-  const back = document.getElementById('nback');
-
-  if (cur===1 || cur===4 || cur===TOTAL) next.classList.remove('vis');
-  else next.classList.add('vis');
-
-  back.classList.toggle('vis', cur > 1);
-
-  if (cur === 2) confetti(40);
-  if (cur === 3) animLetter();
+  document.getElementById('d'+cur).classList.add('on');
+  const nn=document.getElementById('nn'),nb=document.getElementById('nb');
+  nn.classList.toggle('vis',cur>1&&cur<T&&cur!==4);
+  nb.classList.toggle('vis',cur>1);
+  if(cur===2) confetti(40);
+  if(cur===3) animLetter();
 }
-
-function animLetter() {
-  const ps = document.querySelectorAll('#lbody p');
-  ps.forEach(p => p.classList.remove('vis'));
-  ps.forEach((p,i) => setTimeout(() => p.classList.add('vis'), 200 + i*220));
+function animLetter(){
+  const ps=document.querySelectorAll('#lbody p');
+  ps.forEach(p=>p.classList.remove('vis'));
+  ps.forEach((p,i)=>setTimeout(()=>p.classList.add('vis'),150+i*200));
 }
-
-function gYes() {
-  const r = document.getElementById('gift-res');
-  r.textContent = 'Udah gede gausah pake hadiah yaaa wkwkwkw 😜';
+function gYes(){
+  const r=document.getElementById('gres');
+  r.textContent='Udah gede gausah pake hadiah yaaa wkwkwkw 😜';
   r.classList.add('show');
-  setTimeout(() => { go(5); confetti(80); }, 2000);
+  setTimeout(()=>{go(5);confetti(90);},2000);
 }
-function gNo() {
-  const r = document.getElementById('gift-res');
-  r.textContent = 'Pilihan yang bijak xixixi';
+function gNo(){
+  const r=document.getElementById('gres');
+  r.textContent='Pilihan yang bijak xixixi';
   r.classList.add('show');
-  setTimeout(() => go(5), 2000);
+  setTimeout(()=>go(5),2000);
 }
-
-function confetti(n) {
-  const cols = ['#b89a5a','#d4b87a','#e2d8c8','#f2ece0','#8b6e3a','#ffffff'];
-  for (let i = 0; i < n; i++) {
-    const c = document.createElement('div');
-    c.className = 'cf';
-    const s = 4 + Math.random()*6;
-    c.style.cssText = `left:${Math.random()*100}vw;top:0;width:${s}px;height:${s}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${2.5+Math.random()*2}s;animation-delay:${Math.random()*0.6}s;`;
+function confetti(n){
+  const cols=['#e8a8b0','#f4cdd2','#f6ede0','#c47888','#ede0d4','#d4a0a8','#b0c8a0'];
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div'); c.className='cf';
+    const s=3+Math.random()*7;
+    const r=Math.random()>0.4?'50%':'2px';
+    c.style.cssText=`left:${Math.random()*100}vw;top:0;width:${s}px;height:${s}px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${r};animation-duration:${2.5+Math.random()*2.5}s;animation-delay:${Math.random()*0.8}s;`;
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 5000);
+    setTimeout(()=>c.remove(),6000);
   }
 }
-
 go(1);
 </script>
 </body>
