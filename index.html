@@ -388,25 +388,7 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 .dot{width:5px;height:5px;border-radius:50%;background:rgba(194,45,80,0.22);transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 .dot.on{background:var(--rose2);box-shadow:0 0 8px rgba(194,45,80,0.55);width:20px;border-radius:3px}
 
-.page-counter{
-  position:fixed;top:22px;right:24px;z-index:10;
-  font-family:'Jost',sans-serif;font-weight:200;
-  font-size:clamp(0.55em,1.5vw,0.62em);letter-spacing:3px;
-  color:rgba(194,45,80,0.35);
-  transition:opacity 0.5s ease;
-}
-.page-counter.hidden{opacity:0;pointer-events:none}
 
-.monogram-bar{
-  position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:10;
-  display:flex;align-items:center;gap:10px;
-  opacity:0;pointer-events:none;
-  transition:opacity 0.6s ease;
-}
-.monogram-bar.show{opacity:0.35}
-.mono-line{width:36px;height:1px;background:linear-gradient(to right,transparent,rgba(194,45,80,0.6))}
-.mono-line.rev{background:linear-gradient(to left,transparent,rgba(194,45,80,0.6))}
-.mono-text{font-family:'Cormorant Upright',serif;font-size:0.7em;letter-spacing:5px;color:var(--rose3)}
 
 /* petal elements (both ambient and burst) are SVG injected by JS */
 .petal-el{position:fixed;pointer-events:none;z-index:2;transform-style:preserve-3d}
@@ -427,13 +409,7 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 <div class="glow-tl"></div>
 <div class="glow-br"></div>
 
-<div class="monogram-bar" id="monoBar">
-  <div class="mono-line rev"></div>
-  <span class="mono-text">A · A</span>
-  <div class="mono-line"></div>
-</div>
 
-<div class="page-counter hidden" id="pageCounter"></div>
 
 <!-- BOTANICAL ROSES – LEFT -->
 <svg class="rose-left" viewBox="0 0 180 580" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -760,7 +736,8 @@ const AMBIENT_ANIMS = ['petalfall-a','petalfall-b','petalfall-c','petalfall-d'];
     svg.style.cssText = [
       'left:' + (Math.random() * 104 - 2) + 'vw',
       'top:-22px',
-      'animation:' + anim + ' ' + dur + 's ' + del + 's linear infinite',
+      'opacity:0',
+      'animation:' + anim + ' ' + dur + 's ' + del + 's linear infinite both',
     ].join(';');
     document.body.appendChild(svg);
   }
@@ -840,16 +817,6 @@ function go(n) {
   const nb = document.getElementById('nb');
   nn.classList.toggle('vis', cur > 1 && cur < T && cur !== 4);
   nb.classList.toggle('vis', cur > 2);
-
-  const pc = document.getElementById('pageCounter');
-  if (cur > 1) {
-    pc.textContent = cur + ' / ' + T;
-    pc.classList.remove('hidden');
-  } else {
-    pc.classList.add('hidden');
-  }
-
-  document.getElementById('monoBar').classList.toggle('show', cur > 1);
 
   if (cur === 2) burstPetals(40, false);
   if (cur === 3) animLetter();
