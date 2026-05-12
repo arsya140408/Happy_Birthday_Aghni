@@ -47,7 +47,6 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 .bg-layer.active{opacity:0.55;}
 .bg-layer.fade-out{opacity:0;}
 
-/* bg wash & overlays */
 .bg-wash{
   position:fixed;inset:0;z-index:1;
   background:radial-gradient(ellipse 95% 85% at 50% 50%,rgba(9,6,15,0.30) 0%,rgba(9,6,15,0.72) 100%);
@@ -89,9 +88,56 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 .rl-d{animation:rla 5.8s ease-in-out 1.8s infinite;transform-box:fill-box;transform-origin:50% 100%}
 @keyframes rla{0%,100%{transform:rotate(0deg)}40%{transform:rotate(5deg)}72%{transform:rotate(-3deg)}}
 
-/* falling petals */
-.pfall{position:fixed;top:-20px;z-index:2;pointer-events:none;animation:pfall linear infinite}
-@keyframes pfall{0%{transform:translateY(0) rotate(0) translateX(0);opacity:0}8%{opacity:0.55}85%{opacity:0.3}100%{transform:translateY(105vh) rotate(560deg) translateX(50px);opacity:0}}
+/* ─── FALLING PETALS (ambient) ─── */
+/* Each petal is an SVG injected by JS; these keyframes handle drift variants */
+@keyframes petalfall-a{
+  0%  {transform:translateY(0)   translateX(0)    rotate(0deg)   rotateY(0deg);  opacity:0}
+  6%  {opacity:0.6}
+  30% {transform:translateY(28vh) translateX(18px)  rotate(95deg)  rotateY(40deg)}
+  60% {transform:translateY(60vh) translateX(-12px) rotate(200deg) rotateY(80deg);opacity:0.45}
+  100%{transform:translateY(108vh) translateX(24px)  rotate(360deg) rotateY(160deg);opacity:0}
+}
+@keyframes petalfall-b{
+  0%  {transform:translateY(0)   translateX(0)    rotate(0deg)  rotateY(0deg);  opacity:0}
+  8%  {opacity:0.5}
+  35% {transform:translateY(32vh) translateX(-22px) rotate(-80deg) rotateY(60deg)}
+  65% {transform:translateY(65vh) translateX(10px)  rotate(-190deg) rotateY(120deg);opacity:0.4}
+  100%{transform:translateY(110vh) translateX(-30px) rotate(-380deg) rotateY(200deg);opacity:0}
+}
+@keyframes petalfall-c{
+  0%  {transform:translateY(0)   translateX(0)    rotate(20deg) rotateY(0deg);  opacity:0}
+  5%  {opacity:0.55}
+  40% {transform:translateY(38vh) translateX(30px)  rotate(160deg) rotateY(50deg)}
+  70% {transform:translateY(70vh) translateX(-8px)  rotate(280deg) rotateY(90deg);opacity:0.35}
+  100%{transform:translateY(112vh) translateX(15px)  rotate(440deg) rotateY(180deg);opacity:0}
+}
+@keyframes petalfall-d{
+  0%  {transform:translateY(0)   translateX(0)    rotate(-15deg) rotateY(0deg);  opacity:0}
+  7%  {opacity:0.5}
+  45% {transform:translateY(42vh) translateX(-28px)  rotate(-130deg) rotateY(70deg)}
+  75% {transform:translateY(75vh) translateX(16px)   rotate(-260deg) rotateY(130deg);opacity:0.3}
+  100%{transform:translateY(115vh) translateX(-20px)  rotate(-460deg) rotateY(200deg);opacity:0}
+}
+
+/* burst petals (confetti replacement) */
+@keyframes burstpetal-a{
+  0%  {transform:translateY(0) translateX(0) rotate(0deg) rotateY(0deg) scale(1);opacity:1}
+  20% {transform:translateY(-40px) translateX(var(--bx)) rotate(60deg) rotateY(30deg) scale(1.05);opacity:0.95}
+  70% {transform:translateY(55vh) translateX(calc(var(--bx)*1.4)) rotate(280deg) rotateY(110deg) scale(0.9);opacity:0.55}
+  100%{transform:translateY(112vh) translateX(calc(var(--bx)*1.8)) rotate(500deg) rotateY(180deg) scale(0.7);opacity:0}
+}
+@keyframes burstpetal-b{
+  0%  {transform:translateY(0) translateX(0) rotate(0deg) rotateY(0deg) scale(1);opacity:1}
+  15% {transform:translateY(-30px) translateX(var(--bx)) rotate(-50deg) rotateY(20deg) scale(1.08)}
+  65% {transform:translateY(50vh) translateX(calc(var(--bx)*1.3)) rotate(-230deg) rotateY(90deg);opacity:0.5}
+  100%{transform:translateY(110vh) translateX(calc(var(--bx)*1.6)) rotate(-420deg) rotateY(160deg);opacity:0}
+}
+@keyframes burstpetal-c{
+  0%  {transform:translateY(0) translateX(0) rotate(20deg) scale(1);opacity:1}
+  25% {transform:translateY(-50px) translateX(var(--bx)) rotate(90deg) rotateY(45deg) scale(1.1)}
+  80% {transform:translateY(65vh) translateX(calc(var(--bx)*1.5)) rotate(360deg) rotateY(120deg);opacity:0.4}
+  100%{transform:translateY(115vh) translateX(calc(var(--bx)*2)) rotate(560deg) rotateY(200deg);opacity:0}
+}
 
 /* sparkle */
 .sparkle{position:fixed;pointer-events:none;z-index:2;border-radius:50%;animation:sparkle-float ease-in-out infinite}
@@ -102,8 +148,6 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
   position:fixed;inset:0;z-index:3;
   display:flex;align-items:center;justify-content:center;padding:16px;
   opacity:0;pointer-events:none;
-  /* NOTE: transition here is used as fallback only;
-     all transitions are driven by inline styles in go() */
   will-change:opacity,transform,filter;
 }
 .page.active{
@@ -215,6 +259,7 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 .l-body p{margin-bottom:1.3em;opacity:0;transform:translateY(8px);transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1),transform 0.7s cubic-bezier(0.4,0,0.2,1)}
 .l-body p.vis{opacity:1;transform:none}
 .l-body p:first-child::first-letter{font-family:'Cormorant Upright',serif;font-weight:400;font-size:3.2em;line-height:0.78;float:left;margin-right:8px;margin-top:5px;color:var(--rose)}
+.l-body p.no-cap::first-letter{all:unset}
 .l-sign{margin-top:28px;text-align:right}
 .l-sign .closing{font-family:'Jost',sans-serif;font-weight:200;font-size:0.68em;letter-spacing:3px;color:rgba(58,28,54,0.35)}
 .l-sign .sig{font-family:'Alex Brush',cursive;font-size:clamp(1.8em,5vw,2.4em);color:var(--ink);display:block;margin-top:3px;line-height:1}
@@ -363,9 +408,9 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 .mono-line.rev{background:linear-gradient(to left,transparent,rgba(194,45,80,0.6))}
 .mono-text{font-family:'Cormorant Upright',serif;font-size:0.7em;letter-spacing:5px;color:var(--rose3)}
 
-/* confetti */
-.cf{position:fixed;pointer-events:none;z-index:20;animation:cffall linear forwards}
-@keyframes cffall{from{transform:translateY(-10px) rotate(0);opacity:1}to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+/* petal elements (both ambient and burst) are SVG injected by JS */
+.petal-el{position:fixed;pointer-events:none;z-index:2;transform-style:preserve-3d}
+.petal-burst{position:fixed;pointer-events:none;z-index:20;transform-style:preserve-3d}
 
 @media(max-width:600px){
   .rose-left,.rose-right{height:clamp(180px,50vh,320px);opacity:0.75}
@@ -374,7 +419,6 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 </head>
 <body>
 
-<!-- Two bg layers for crossfade -->
 <div class="bg-layer" id="bg0" style="background-image:url('aghni1.jpeg')"></div>
 <div class="bg-layer" id="bg1" style="background-image:url('aghni2.jpeg')"></div>
 
@@ -558,7 +602,7 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
     <span class="l-date" id="ldate"></span>
     <span class="l-sal">Dear Aghni,</span>
     <div class="l-body" id="lbody">
-      <p>Surpriseeee, selamat ulang tahun ya, Aghni! Panjang umur, sehat selalu, dan jangan pernah lupa makan teratur — karena sehat itu mahal harganya.</p>
+      <p class="no-cap">surpriseeee, selamat ulang tahun ya, Aghni! Panjang umur, sehat selalu, dan jangan pernah lupa makan teratur — karena sehat itu mahal harganya.</p>
       <p>Semoga hari-harimu selalu dipenuhi hal-hal baik, dikelilingi orang-orang yang tulus, dan tentunya dipenuhi kebahagiaan yang selalu membuatmu tersenyum.</p>
       <p>Mungkin aku nggak terlalu pandai merangkai kata, tapi semoga surat sederhana ini bisa membuat hari spesialmu terasa sedikit lebih berkesan. Sederhana memang, tapi aku menuliskannya dengan sepenuh hati.</p>
       <p>Di usia ke-18 ini, semoga setiap langkah yang kamu ambil selalu dipenuhi keyakinan, keberanian, dan semangat untuk meraih semua impianmu.</p>
@@ -605,21 +649,16 @@ html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Cormoran
 const T = 5;
 let cur = 1;
 let envOpened = false;
-let isTransitioning = false; // FIX 3: guard against rapid clicks / concurrent transitions
+let isTransitioning = false;
 
 let bgIndex = 0;
 const bgLayers = [document.getElementById('bg0'), document.getElementById('bg1')];
-
-/* ── Background crossfade ── */
 bgLayers[0].classList.add('active');
 
 function crossfadeBg() {
   const next = 1 - bgIndex;
   bgLayers[next].classList.add('active');
-  setTimeout(() => {
-    bgLayers[bgIndex].classList.remove('active');
-    bgIndex = next;
-  }, 200);
+  setTimeout(() => { bgLayers[bgIndex].classList.remove('active'); bgIndex = next; }, 200);
 }
 setInterval(crossfadeBg, 6000);
 
@@ -637,32 +676,104 @@ document.getElementById('ldate').textContent = new Date().toLocaleDateString('id
   day: 'numeric', month: 'long', year: 'numeric'
 });
 
-/* ── Falling petals ── */
-(function () {
-  const cols = [
-    'rgba(194,45,80,0.35)', 'rgba(244,160,184,0.3)',
-    'rgba(250,208,218,0.28)', 'rgba(240,96,120,0.25)', 'rgba(248,192,206,0.22)'
-  ];
-  for (let i = 0; i < 14; i++) {
-    const p = document.createElement('div');
-    p.className = 'pfall';
-    const s = 6 + Math.random() * 10;
-    p.style.cssText = `left:${Math.random() * 100}%;width:${s}px;height:${s * 0.7}px;background:${cols[Math.floor(Math.random() * cols.length)]};border-radius:${Math.random() > .5 ? '50% 0 50% 0' : '0 50% 0 50%'};animation-duration:${11 + Math.random() * 14}s;animation-delay:${Math.random() * 12}s`;
-    document.body.appendChild(p);
+/* ── Petal SVG paths (organic rose petal shapes) ── */
+const PETAL_PATHS = [
+  // classic oval petal
+  'M0,14 C-7,9,-11,1,-8,-7 C-5,-14,5,-14,8,-7 C11,1,7,9,0,14Z',
+  // wider teardrop
+  'M0,16 C-9,10,-13,0,-9,-9 C-5,-16,5,-16,9,-9 C13,0,9,10,0,16Z',
+  // asymmetric breeze petal
+  'M0,15 C-8,8,-12,-1,-7,-9 C-3,-15,6,-13,10,-6 C13,2,8,10,0,15Z',
+  // slim petal
+  'M0,18 C-4,10,-6,1,-4,-8 C-2,-15,2,-15,4,-8 C6,1,4,10,0,18Z',
+  // crinkled edge petal
+  'M0,14 C-6,8,-11,2,-9,-5 C-7,-11,-1,-15,0,-13 C1,-15,7,-11,9,-5 C11,2,6,8,0,14Z',
+];
+
+const PETAL_COLORS = [
+  ['#c22d50','#9a1838'],  // deep crimson
+  ['#e06078','#b83054'],  // mid rose
+  ['#f4a0b8','#e06878'],  // blush
+  ['#fad0da','#f4a0b8'],  // pale blush
+  ['#d94060','#a82040'],  // vivid
+  ['#f0809a','#d05070'],  // coral rose
+];
+
+function makePetalSVG(size, colorPair, opacity) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','-14 -18 28 36');
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size);
+  svg.style.overflow = 'visible';
+
+  // shadow layer (slightly offset, darker, blurred)
+  const shadow = document.createElementNS(ns,'path');
+  const pi = Math.floor(Math.random() * PETAL_PATHS.length);
+  shadow.setAttribute('d', PETAL_PATHS[pi]);
+  shadow.setAttribute('fill', colorPair[1]);
+  shadow.setAttribute('opacity', '0.35');
+  shadow.setAttribute('transform','translate(1.5,2)');
+  svg.appendChild(shadow);
+
+  // main petal
+  const main = document.createElementNS(ns,'path');
+  main.setAttribute('d', PETAL_PATHS[pi]);
+  main.setAttribute('fill', colorPair[0]);
+  main.setAttribute('opacity', opacity.toFixed(2));
+  svg.appendChild(main);
+
+  // midrib vein
+  const vein = document.createElementNS(ns,'path');
+  vein.setAttribute('d','M0,14 C0,7,0,-2,0,-10');
+  vein.setAttribute('stroke', colorPair[1]);
+  vein.setAttribute('stroke-width','0.5');
+  vein.setAttribute('stroke-opacity','0.4');
+  vein.setAttribute('fill','none');
+  svg.appendChild(vein);
+
+  // subtle highlight sheen
+  const sheen = document.createElementNS(ns,'ellipse');
+  sheen.setAttribute('cx','-3');
+  sheen.setAttribute('cy','-3');
+  sheen.setAttribute('rx','4');
+  sheen.setAttribute('ry','6');
+  sheen.setAttribute('fill','rgba(255,255,255,0.12)');
+  sheen.setAttribute('transform','rotate(-20 -3 -3)');
+  svg.appendChild(sheen);
+
+  return svg;
+}
+
+/* ── Ambient falling petals ── */
+const AMBIENT_ANIMS = ['petalfall-a','petalfall-b','petalfall-c','petalfall-d'];
+
+(function spawnAmbientPetals() {
+  for (let i = 0; i < 16; i++) {
+    const size   = 12 + Math.random() * 16;
+    const colors = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+    const svg    = makePetalSVG(size, colors, 0.55 + Math.random() * 0.35);
+    svg.className = 'petal-el';
+    const anim = AMBIENT_ANIMS[Math.floor(Math.random() * AMBIENT_ANIMS.length)];
+    const dur  = 12 + Math.random() * 16;
+    const del  = Math.random() * 18;
+    svg.style.cssText = [
+      'left:' + (Math.random() * 104 - 2) + 'vw',
+      'top:-22px',
+      'animation:' + anim + ' ' + dur + 's ' + del + 's linear infinite',
+    ].join(';');
+    document.body.appendChild(svg);
   }
 })();
 
 /* ── Sparkles ── */
 (function () {
-  const colors = [
-    'rgba(194,45,80,0.5)', 'rgba(253,220,130,0.4)',
-    'rgba(244,160,184,0.45)', 'rgba(255,255,255,0.3)'
-  ];
+  const colors = ['rgba(194,45,80,0.5)','rgba(253,220,130,0.4)','rgba(244,160,184,0.45)','rgba(255,255,255,0.3)'];
   for (let i = 0; i < 18; i++) {
     const sp = document.createElement('div');
     sp.className = 'sparkle';
     const s = 1.5 + Math.random() * 3;
-    sp.style.cssText = `left:${5 + Math.random() * 90}%;top:${5 + Math.random() * 90}%;width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random() * colors.length)]};animation-duration:${3 + Math.random() * 5}s;animation-delay:${Math.random() * 6}s`;
+    sp.style.cssText = `left:${5+Math.random()*90}%;top:${5+Math.random()*90}%;width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:50%;animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*6}s`;
     document.body.appendChild(sp);
   }
 })();
@@ -675,26 +786,21 @@ function openEnv() {
   const scene = env.closest('.env-scene');
   scene.style.animation = 'none';
   env.classList.add('opening');
-  confetti(36);
+  burstPetals(28, true);
   setTimeout(() => go(2), 1700);
 }
 
 /* ── Page transition ── */
 function go(n) {
-  // FIX 1: reject same-page call and concurrent transitions
   if (n < 1 || n > T || n === cur || isTransitioning) return;
-
   isTransitioning = true;
 
   const prevEl = document.getElementById('p' + cur);
   const nextEl = document.getElementById('p' + n);
   const goingForward = n > cur;
 
-  // ── Exit: animate prev out with inline styles ──
-  // We set inline transition first so the browser knows how to animate
   prevEl.style.transition = 'opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease';
   prevEl.style.pointerEvents = 'none';
-  // Small rAF delay so the transition property registers before we change values
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       prevEl.style.opacity = '0';
@@ -703,51 +809,38 @@ function go(n) {
     });
   });
 
-  // ── Enter: set up next page and animate it in ──
   setTimeout(() => {
-    // FIX 2: properly remove active from prev, add to next
     prevEl.classList.remove('active');
-    // Clear inline exit styles from prev — it now relies on CSS (.page = opacity 0, hidden)
     prevEl.style.cssText = '';
 
-    // Position next off-screen (no transition yet)
     nextEl.style.transition = 'none';
     nextEl.style.opacity = '0';
     nextEl.style.transform = goingForward ? 'translateY(18px) scale(0.985)' : 'translateY(-18px) scale(0.985)';
     nextEl.style.filter = 'blur(5px)';
-    // FIX 2: add active class so pointer-events and final CSS state are correct
     nextEl.classList.add('active');
 
-    // Force reflow so "none" transition registers before we set the real one
     void nextEl.offsetHeight;
 
-    // Animate next in
     nextEl.style.transition = 'opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.34,1.2,0.64,1), filter 0.7s cubic-bezier(0.4,0,0.2,1)';
     nextEl.style.opacity = '1';
     nextEl.style.transform = 'translateY(0) scale(1)';
     nextEl.style.filter = 'blur(0px)';
 
-    // After animation completes, strip inline styles — .active CSS takes over cleanly
     setTimeout(() => {
       nextEl.style.cssText = '';
-      isTransitioning = false; // FIX 3: unlock after animation fully completes
+      isTransitioning = false;
     }, 750);
+  }, 120);
 
-  }, 120); // slightly longer stagger so exit animation has a head start
-
-  // ── Update UI ──
   document.getElementById('d' + cur).classList.remove('on');
   cur = n;
   document.getElementById('d' + cur).classList.add('on');
 
   const nn = document.getElementById('nn');
   const nb = document.getElementById('nb');
-  // Show Next on pages 2 & 3 only (page 4 has its own buttons, page 5 is final)
   nn.classList.toggle('vis', cur > 1 && cur < T && cur !== 4);
-  // FIX 4: hide Back on page 2 — returning to page 1 leaves envelope broken/stuck
   nb.classList.toggle('vis', cur > 2);
 
-  // Page counter
   const pc = document.getElementById('pageCounter');
   if (cur > 1) {
     pc.textContent = cur + ' / ' + T;
@@ -756,15 +849,13 @@ function go(n) {
     pc.classList.add('hidden');
   }
 
-  // Monogram bar
   document.getElementById('monoBar').classList.toggle('show', cur > 1);
 
-  // Page-specific callbacks
-  if (cur === 2) confetti(44);
+  if (cur === 2) burstPetals(40, false);
   if (cur === 3) animLetter();
 }
 
-/* ── Animate letter paragraphs in ── */
+/* ── Animate letter paragraphs ── */
 function animLetter() {
   const ps = document.querySelectorAll('#lbody p');
   ps.forEach(p => p.classList.remove('vis'));
@@ -776,7 +867,7 @@ function gYes() {
   const r = document.getElementById('gres');
   r.textContent = 'Udah gede gausah pake hadiah yaaa wkwkwkw 😜';
   r.classList.add('show');
-  setTimeout(() => { go(5); confetti(100); }, 2000);
+  setTimeout(() => { go(5); burstPetals(90, false); }, 2000);
 }
 function gNo() {
   const r = document.getElementById('gres');
@@ -785,21 +876,44 @@ function gNo() {
   setTimeout(() => go(5), 2000);
 }
 
-/* ── Confetti burst ── */
-function confetti(n) {
-  const cols = ['#c22d50', '#e06078', '#f4a0b8', '#fad0da', '#fff0f4', '#ede0d4', '#a8c8a0', '#fde8a0'];
+/* ── Realistic petal burst (replaces confetti) ── */
+const BURST_ANIMS = ['burstpetal-a','burstpetal-b','burstpetal-c'];
+
+function burstPetals(n, fromEnvelope) {
   for (let i = 0; i < n; i++) {
-    const c = document.createElement('div');
-    c.className = 'cf';
-    const s = 3 + Math.random() * 8;
-    const r = Math.random() > .4 ? '50%' : '2px';
-    c.style.cssText = `left:${Math.random() * 100}vw;top:0;width:${s}px;height:${s}px;background:${cols[Math.floor(Math.random() * cols.length)]};border-radius:${r};animation-duration:${2.5 + Math.random() * 2.5}s;animation-delay:${Math.random() * 0.8}s`;
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 6000);
+    const delay = Math.random() * (fromEnvelope ? 1.0 : 0.6);
+    setTimeout(() => {
+      const size   = 8 + Math.random() * 18;
+      const colors = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+      const svg    = makePetalSVG(size, colors, 0.7 + Math.random() * 0.3);
+      svg.className = 'petal-burst';
+
+      // start near centre (or near top if from envelope)
+      const startX = fromEnvelope
+        ? (30 + Math.random() * 40)   // cluster around envelope
+        : (5  + Math.random() * 90);  // full width
+      const startY = fromEnvelope ? 35 : (Math.random() * 20);
+
+      // horizontal drift: left or right, with variance
+      const driftSign = Math.random() > 0.5 ? 1 : -1;
+      const driftPx   = driftSign * (30 + Math.random() * 120);
+
+      const anim = BURST_ANIMS[Math.floor(Math.random() * BURST_ANIMS.length)];
+      const dur  = 2.8 + Math.random() * 2.8;
+
+      svg.style.cssText = [
+        'left:'  + startX + 'vw',
+        'top:'   + startY + 'vh',
+        '--bx:'  + driftPx + 'px',
+        'animation:' + anim + ' ' + dur + 's linear forwards',
+      ].join(';');
+
+      document.body.appendChild(svg);
+      setTimeout(() => svg.remove(), (dur + 0.3) * 1000);
+    }, delay * 1000);
   }
 }
 
-// FIX 1: Replace go(1) with init() — no transition needed, page 1 already has .active in HTML
 function init() {
   document.getElementById('nn').classList.remove('vis');
   document.getElementById('nb').classList.remove('vis');
